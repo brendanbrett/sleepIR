@@ -65,9 +65,10 @@ if __name__ == '__main__':
             print('Sending violation notification...')
             violation_users = [roster['user']['display_name'] for roster in violation_rosters]
             client = Client(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
-            message = client.messages.create(
-                body=f'Roster violations found for the following teams: {", ".join(violation_users)}',
+            client.messages.create(
+                to=config.PHONE_TO,
                 from_=config.PHONE_FROM,
-                to=config.PHONE_TO
-            )
-            print(message.sid)
+                body=f'IR Violation: {", ".join(violation_users)}')
+            print('Notification sent.')
+        else:
+            print('No violations found.')
